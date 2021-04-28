@@ -57,7 +57,7 @@ ui <- navbarPage(
                  column(5,
                         titlePanel("The Worst Barrel Ratios"),
                         plotOutput("barrel_plot"),
-                        p("Explanation")),
+                        p(" ")),
                  
                  
 # I chose to make the salary plot longer to make the names more visible
@@ -65,7 +65,7 @@ ui <- navbarPage(
                  column(7,
                         titlePanel("The Worst Players and their Salaries"),
                         plotOutput("salary_bad_plot"),
-                        p("Explanation"))))),
+                        p(" "))))),
 
 
 # I then made a tab for players with higher ratios

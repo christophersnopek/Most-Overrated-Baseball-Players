@@ -5,7 +5,7 @@
 library(tidyverse)
 library(gganimate)
 library(artyfarty)
-
+ss
 
 # This was the first dataset that I loaded into R.
 # It was helpful for my barrel ratio.
