@@ -1,0 +1,13 @@
+name: shiny_app_1
+title: shiny_app_1
+username:
+account: goldenbear27
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3730406
+bundleId: 4572601
+url: https://goldenbear27.shinyapps.io/shiny_app_1/
+when: 1620438888.62993
+lastSyncTime: 1620438888.62997
+asMultiple: FALSE
+asStatic: FALSE

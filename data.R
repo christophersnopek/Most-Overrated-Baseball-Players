@@ -5,7 +5,8 @@
 library(tidyverse)
 library(gganimate)
 library(artyfarty)
-ss
+library(png)
+library(patchwork)
 
 # This was the first dataset that I loaded into R.
 # It was helpful for my barrel ratio.
@@ -154,6 +155,54 @@ salary_good_plot <- salary_good_ratio %>%
 salary_good_plot
 
 
+# I had to save the images that I had downloaded to variable names
+# This was the same process with all these images
+
+khiura <- readPNG("khiura.png", native = TRUE)
+palonso <- readPNG("palonso.png", native = TRUE)
+blowe <- readPNG("blowe.png", native = TRUE)
+
+# I created a new variable called salary_ratio
+# This whole plot basically just summarizes the data from the salaries graph
+# I put player images on the most severe undervalued players
+# It was very hard to get the correct coordinates for the images.
+
+barrel_good_salary <- salary_good_ratio %>%
+  mutate(barrel_ratio = barrel_ratio * 100) %>%
+  mutate(salary = salary / 1000000) %>%
+  mutate(salary_ratio = barrel_ratio / salary) %>%
+  ggplot() +
+  geom_bar(aes(x = reorder(full_name, salary_ratio), y = salary_ratio),
+           stat = 'identity') +
+  scale_x_discrete(guide = guide_axis(n.dodge=3)) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(x = "Player Name",
+       y = "Barrel to Salary Ratio",
+       title = "Most Undervalued Players") +
+  theme_economist() +
+  theme(
+    plot.title = element_text(color="blue", size=16, face="bold"),
+    axis.title.x = element_text(color="blue", size=12, face="bold"),
+    axis.title.y = element_text(color="blue", size=12, face="bold")) +
+  inset_element(p = khiura,
+                left = 0.896,
+                bottom = 0.849,
+                right = 0.99,
+                top = 0.999) +
+  inset_element(p = palonso,
+                left = 0.796,
+                bottom = 0.849,
+                right = 0.89,
+                top = 0.999) +
+  inset_element(p = blowe,
+                left = 0.696,
+                bottom = 0.35,
+                right = 0.79,
+                top = 0.5)
+
+barrel_good_salary
+
+
 # I then did the same process, but for the 10 worst players.
 # I decided to make their salaries in millions as well.
 # It was weird, because their x axis turned out to be a lot different 
@@ -178,8 +227,54 @@ salary_bad_plot <- salary_bad_ratio %>%
     axis.title.y = element_text(color="blue", size=12, face="bold"))
 
 salary_bad_plot
-# transition_states(full_name, wrap = FALSE) +
-# shadow_mark()
+
+# I had to save the images that I had downloaded to variable names
+# This was the same process with all these images
+
+jvillar <- readPNG("jvillar.png", native = TRUE)
+kwong <- readPNG("kwong.png", native = TRUE)
+halberto <- readPNG("current.png", native = TRUE)
+
+# I created a new variable called salary_ratio
+# This whole plot basically just summarizes the data from the salaries graph
+# I put player images on the most severe overvalued players
+# It was very hard to get the correct coordinates for the images.
+
+barrel_bad_salary <- salary_bad_ratio %>%
+  mutate(barrel_ratio = barrel_ratio * 100) %>%
+  mutate(salary = salary / 1000000) %>%
+  mutate(salary_ratio = barrel_ratio / salary) %>%
+  ggplot() +
+  geom_bar(aes(x = reorder(full_name, salary_ratio), y = salary_ratio),
+           stat = 'identity') +
+  scale_x_discrete(guide = guide_axis(n.dodge=3)) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(x = "Player Name",
+       y = "Barrel to Salary Ratio",
+       title = "Most Overvalued Players") +
+  theme_economist() +
+  theme(
+    plot.title = element_text(color="blue", size=16, face="bold"),
+    axis.title.x = element_text(color="blue", size=12, face="bold"),
+    axis.title.y = element_text(color="blue", size=12, face="bold")) +
+  inset_element(p = jvillar,
+                left = 0.125,
+                bottom = 0.18,
+                right = 0.22,
+                top = 0.33) +
+  inset_element(p = kwong,
+                left = 0.02,
+                bottom = 0.18,
+                right = 0.117,
+                top = 0.33) +
+  inset_element(p = halberto,
+                left = 0.228,
+                bottom = 0.21,
+                right = 0.323,
+                top = 0.36)
+
+barrel_bad_salary
+  
 
 
 # I then created a bar plot to represent the 10 best players with barrel ratios.
@@ -258,6 +353,8 @@ plot_1 <- exit_velocity %>%
 #   ggplot(mapping = aes(x = last_name)) +
 #   geom_bar()
 # 
+
+# library(rstanarm)
 # fit_obj <- stan_glm(data = exit_velocity,
 #                     formula = avg_hit_speed ~ 1,
 #                     family = gaussian,
@@ -274,12 +371,17 @@ plot_1 <- exit_velocity %>%
 #        subtitle = "Average exit velo around 90 mph",
 #        x = "MPH",
 #        y = "Probability",
-#        caption = "Data source: NHANES") +
+#        caption = "Data source: Baseball Savant") +
 #   scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
-#   theme_classic()
+#   theme_economist() +
+#   theme(
+#     plot.title = element_text(color="blue", size=16, face="bold"),
+#     axis.title.x = element_text(color="blue", size=12, face="bold"),
+#     axis.title.y = element_text(color="blue", size=12, face="bold")
+#   )
 # fit_plot
 # 
-# ggsave("baseball_velocity.png", fit_plot)
+# ggsave("new_baseball_velocity.png", fit_plot)
 
 
 # I ended up reading in one more dataset.

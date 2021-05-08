@@ -20,6 +20,53 @@ library(shinythemes)
 
 ui <- navbarPage(
     "Hitter Evaluations",
+    tabPanel("Introduction",
+             fluidPage(fluidRow(
+                 column(3,
+                        titlePanel("Velo Distribution"),
+                        p("This graph displays a posterior distrubution for Average
+                          MLB exit velocity. Exit Velocity is a measure for how fast
+                          a ball comes off a hitter's bat in a game. As you can see from
+                          the posterior distribution, the average exit velo is around 90
+                          miles per hour. This means that if watched one random hit 
+                          from the MLB season, there is around a 3% chance that the ball
+                          will be hit near 90 miles per hour off the bat.
+                          
+                          I created this distribution using the function stan_glm. 
+                          Since I had no predictor variables, I had a formula argument 
+                          of avg_hit_speed ~ 1. I used data from Baseball Savant.")),
+                 
+                 
+                 # I chose to make the plot a lot wider in order to fully display the chart.
+                 # I did not want to just focus on the explanation itself.
+                 
+                 column(9,
+                        imageOutput("mph_distribution"))))),
+    # I now have a tab that was supposed to be my introduction tab.
+    # Although, I did not end up liking the tab itself.
+    # I had trouble understanding the meaning of the histogram.
+    
+    tabPanel("Constitutional",
+             fluidPage(theme = shinytheme("darkly"),
+                       fluidRow(
+                           column(7,
+                                  titlePanel("The Basics"),
+                                  plotOutput("plot_1"),
+                                  p(" ")),
+                           
+                           
+                           # Displaying the image was a pocess in it of itself. It took me a while
+                           # to display it without the console running forever.
+                           
+                           column(5,
+                                  titlePanel("Velo Correlation"),
+                                  p("This graph displays the correlation between
+                                    exit velocity and distance traveled of the ball. 
+                                    As you can see, there is a positve correlation
+                                    between the two. Because the game of baseball
+                                    is relying more and more on power, exit velocity
+                                    is becoming a key stat for hitting long home runs"))))),
+    
     tabPanel("Interaction",
              titlePanel("Choose your character"),
              
@@ -57,7 +104,15 @@ ui <- navbarPage(
                  column(5,
                         titlePanel("The Worst Barrel Ratios"),
                         plotOutput("barrel_plot"),
-                        p(" ")),
+                        p("The graph above is showing you top 10 worst barrel ratios
+                          in the league. Barrel Ratio is a self created stat which is 
+                          a measure of the percentage of hits a player has that are
+                          hard hit balls. Because these players have bad barrel ratios,
+                          a small percentage of their hits were balls that they hit hard.
+                          Their batting average may be high, but they were lucky most of 
+                          the time that they got a hit. This is intriguing to an MLB 
+                          general manager when determing the salary that a certain hitter 
+                          should be paid.")),
                  
                  
 # I chose to make the salary plot longer to make the names more visible
@@ -65,7 +120,11 @@ ui <- navbarPage(
                  column(7,
                         titlePanel("The Worst Players and their Salaries"),
                         plotOutput("salary_bad_plot"),
-                        p(" "))))),
+                        p("The graph above is showing you what the players with 
+                          the top 10 worst barrel ratios are getting paid. As you can 
+                          see, some of the players are getting paid about what they should,
+                          but some of the players are getting paid too much. We will
+                          summarize this chart in the Evaluations tab."))))),
 
 
 # I then made a tab for players with higher ratios
@@ -76,7 +135,17 @@ ui <- navbarPage(
                  column(5,
                         titlePanel("The Best Barrel Ratios"),
                         plotOutput("barrel_plot_good"),
-                        p(" ")),
+                        p("The graph above is showing you top 10 best barrel ratios
+                          in the league. As mentioned previously, barrel ratio is a self
+                          created stat which is 
+                          a measure of the percentage of hits a player has that are
+                          hard hit balls. Because these players have good barrel ratios,
+                          a large percentage of their hits were balls that they hit hard.
+                          There batting average may be low, but they hit the ball
+                          hard most of 
+                          the time that they got a hit. This is also intriguing to an MLB 
+                          general manager when determing the salary that a certain hitter 
+                          should be paid. ")),
 
 
 # I initially had a theme from a package that I found online.
@@ -85,7 +154,11 @@ ui <- navbarPage(
                  column(7,
                         titlePanel("The Best Players and their Salaries"),
                         plotOutput("salary_good_plot"),
-                        p(" "))))),
+                        p("The graph above is showing you what the players with 
+                          the top 10 best barrel ratios are getting paid. As you can 
+                          see, some of the players are getting paid about what they should,
+                          but some of the players are getting paid too little. We will
+                          summarize this chart in the Evaluations tab. "))))),
 
 
 # I then created a tab to display the players that I found as overvalued and
@@ -98,22 +171,30 @@ ui <- navbarPage(
     tabPanel("Evaluations",
              fluidPage(fluidRow(
                  column(6,
-                        titlePanel("Undervalued Players"),
-                        p("Keston Hiura"),
-                        imageOutput("kestonhiura"),
-                        p("Evan White"),
-                        imageOutput("evanwhite"),
-                        p("Brandon Lowe"),
-                        imageOutput("blowe")
-                 ),
+                        plotOutput("barrel_bad_salary"),
+                        p("We created the graph above by using the same players from
+                          the worst barrel ratios graph. The graph shows the 
+                          ratio between their poor barrel ratios and their 
+                          salaries. We called this their Barrel-to-Salary Ratios.
+                          If a player had a low barrel ratio but a high salary, then
+                          they would have a low Barrel-to-Salary Ratio. As you can
+                          see, Kolten Wong, Johnathan Villar, and Hanser Alberto 
+                          have the worst Barrel-to-Salary Ratios. This means they
+                          are getting paid too much for the small amount of hard
+                          hit balls that they are hitting."))
+                 ,
                  column(6,
-                        titlePanel("Overvalued Players"),
-                        p("Johnathan Villar"),
-                        imageOutput("villar"),
-                        p("David Fletcher"),
-                        imageOutput("dfletcher"),
-                        p("Kolten Wong"),
-                        imageOutput("kwong"))))),
+                        plotOutput("barrel_good_salary"),
+                        p("We created the graph above by using the same players from
+                          the best barrel ratios graph. The graph shows the 
+                          ratio between their great barrel ratios and their 
+                          salaries. We called this their Barrel-to-Salary Ratios.
+                          If a player had a high barrel ratio but a low salary, then
+                          they would have a high Barrel-to-Salary Ratio. As you can
+                          see, Keston Hiura, Pete Alonso, and Brandon Lowe 
+                          have the best Barrel-to-Salary Ratios. This means they
+                          are getting paid too little for the large amount of hard
+                          hit balls that they are hitting."))))),
 
 
 # I then created a tab that displayed a line chart of the top 10 players.
@@ -124,7 +205,12 @@ ui <- navbarPage(
                  column(3,
                         titlePanel("The Best and their Path"),
                         p("This graph displays the top 10 players and their
-                          barrel ratios throughout the years.")),
+                          barrel ratios throughout the years. As you can see
+                          there are players who have been around for a long time,
+                          Nick Castellanos, and we have players who have only been
+                          around for a year, Fernando Tatis Jr. In fact, there is
+                          only a small point for Tatis on this chart, because he
+                          dubuted in 2021.")),
                  
 
 # I chose to make the plot a lot wider in order to fully display the chart.
@@ -134,26 +220,7 @@ ui <- navbarPage(
                         plotOutput("yearly_barrel"))))),
 
 
-# I now have a tab that was supposed to be my introduction tab.
-# Although, I did not end up liking the tab itself.
-# I had trouble understanding the meaning of the histogram.
 
-    tabPanel("Constitutional",
-             fluidPage(theme = shinytheme("darkly"),
-                       fluidRow(
-                           column(7,
-                                  titlePanel("The Basics"),
-                                  plotOutput("plot_1"),
-                                  p(" ")),
-                           
-                           
-# Displaying the image was a pocess in it of itself. It took me a while
-# to display it without the console running forever.
-                           
-                           column(5,
-                                  titlePanel("Classy Distribution"),
-                                  imageOutput("mph_distribution"),
-                                  p(" "))))),
 
 
 # I then created a discussion tab that discusses the modeling choices I made.
@@ -192,23 +259,21 @@ ui <- navbarPage(
              h3("About Me"),
              p("My name is Christopher Snopek and I study Data Science! 
              You can reach me at csnopek@college.harvard.edu."),
-             p("I have not processed the data for my project into my raw data folder. 
-               I have made progress on the project though. I know with confidence, what 
-               I want my topic to be and how I want to analyze that topic. I have also done
-               research on different graphs that involve the topic of hard hit baseballs to
-               get an idea of how I should represent that data. I feel good about my idea, because
-               I feel like hard hit baseballs are often overlooked by organizations. I did find
-               a csv that I could use during the milestone. I am happy that I found a csv that
-               should not be too difficult to process. I still need to do more research on how
-               to read a csv into a shinyapp. I looked over the csv file to see which
-               columns will become useful to me. I found the data on baseball savant. I feel
-               that I have made good progress with my project, because I great idea of what
-               I want to accomplish with my data. I also know where my data is coming from, which 
-               is a nice feeling to have. I want to see if some MLB players are overlooked, because
-               they have a low batting average but a high hard hit ball percentage. I found that
-               the more you hit the ball hard, the better chance one has to get on base. I am passionate
-               about this topic. I have a good feel for the progress that I have made thus far."),
-             p(tags$a(href = "https://github.com/christophersnopek/shiny_app_1.git"))))
+             p("This project was a long process. I started off with only players batting
+               average and the number of hard hit balls that they had. I got 
+               most of my data from", a("Baseball Savant", 
+                                            href="https://baseballsavant.mlb.com/savant-player/pete-alonso-624413?stats=statcast-r-hitting-mlb"), 
+               "I had individually look up 
+               the salaries of certain players. I found the salaries through", a("US Today",
+                                                                                 href="https://databases.usatoday.com/mlb-salaries/"), "and",
+               a("Baseball Reference",
+                 href="https://www.baseball-reference.com/about/salary.shtml"),
+              ". I then piped my way until
+               I found 10 of the best and 10 of the worst barrel ratios, a self made
+               variable to measure quality of at bats. I then used this to see if the
+               players were undervalued or overvalued based on their salaries. I ended up
+               with a fair conclusion by displaying a couple of players that were overvalued
+               and a couple of players that were undervalued.")))
 
 
 # I first had to set up these libraries to help with the interaction
@@ -226,8 +291,8 @@ server <- function(input, output) {
 # This was the first image that I actually displayed. It took me a while
 # to first display the image itself.
 
-    output$mph_distribution <- renderImage({list(src = "baseball_velocity.png",
-                                                 width = 800,
+    output$mph_distribution <- renderImage({list(src = "new_baseball_velocity.png",
+                                                 width = 600,
                                                  height = 500,
                                                  alt = "MPH Distribution")
 
@@ -235,35 +300,7 @@ server <- function(input, output) {
 # This was the image of Keston Hiura with not height or width argument.
 
     }, deleteFile = FALSE)
-    output$kestonhiura <- renderImage({list(src = "khiura.png",
-                                                 alt = "MPH Distribution")
-        
-    
-# This is the same process as the Keston Hiura process.
-
-    }, deleteFile = FALSE)
-    output$evanwhite <- renderImage({list(src = "ewhite.png",
-                                                 alt = "MPH Distribution")
-        
-
-# I did the same process for all of the baseball player imaging.
-# It did take some time to format.
-# Although, I still need to figure out the height distortion.
-        
-    }, deleteFile = FALSE)
-    output$villar <- renderImage({list(src = "jvillar.png",
-                                                 alt = "MPH Distribution")
-    }, deleteFile = FALSE)
-    output$blowe <- renderImage({list(src = "blowe.png",
-                                       alt = "MPH Distribution")
-    }, deleteFile = FALSE)
-    output$dfletcher <- renderImage({list(src = "dfletcher.png",
-                                       alt = "MPH Distribution")
-    }, deleteFile = FALSE)
-    output$kwong <- renderImage({list(src = "kwong.png",
-                                       alt = "MPH Distribution")
-    }, deleteFile = FALSE)
-    
+ 
     
 # now we are on to all of the plots.
 # This part of the code was pretty easy for me to understand.
@@ -276,7 +313,8 @@ server <- function(input, output) {
     output$salary_good_plot <- renderPlot(salary_good_plot)
     output$barrel_plot_good <- renderPlot(barrel_plot_good)
     output$yearly_barrel <- renderPlot(yearly_barrel)
-    
+    output$barrel_bad_salary <- renderPlot(barrel_bad_salary)
+    output$barrel_good_salary <- renderPlot(barrel_good_salary)
     
 # This is where I start to get some help from Diego Martinez's code.
 # I did not change much from his graph, but I plan on doing so before May 9.
@@ -319,25 +357,6 @@ server <- function(input, output) {
     }
     )
 }
-
-# shinyApp(
-#     ui = fluidPage(
-#         shinythemes::themeSelector(),  # <--- Add this somewhere in the UI
-#         sidebarPanel(
-#             textInput("txt", "Text input:", "text here"),
-#             sliderInput("slider", "Slider input:", 1, 100, 30),
-#             actionButton("action", "Button"),
-#             actionButton("action2", "Button2", class = "btn-primary")
-#         ),
-#         mainPanel(
-#             tabsetPanel(
-#                 tabPanel("Tab 1"),
-#                 tabPanel("Tab 2")
-#             )
-#         )
-#     ),
-#     server = function(input, output) {}
-# )
 
 # Run the application 
 shinyApp(ui = ui, server = server)
